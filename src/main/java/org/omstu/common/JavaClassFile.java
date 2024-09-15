@@ -7,9 +7,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class JavaClassFile implements IJavaFile {
-    private static final Pattern CLASS_PATTERN = Pattern.compile("(?<=class\\s|interface\\s)(\\w+)");
-    private static final Pattern EXTENDS_PATTERN = Pattern.compile("extends\\s+(\\w+)");
-    private static final Pattern IMPLEMENTS_PATTERN = Pattern.compile("implements\\s+([\\w\\s,]+)");
+    private static final Pattern CLASS_PATTERN = Pattern.compile("(?<=class\\s|interface\\s)([A-Z][a-zA-Z\\d]*)");
+    private static final Pattern EXTENDS_PATTERN = Pattern.compile("extends\\s+([A-Z][a-zA-Z]*) ");
+    private static final Pattern IMPLEMENTS_PATTERN = Pattern.compile("implements\\s+((?:[A-Z][a-zA-Z0-9]*(?:,\\s*)?|(?:\\s+|,)?)+)");
 
     Path path;
     String data;

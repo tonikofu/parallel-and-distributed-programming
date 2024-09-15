@@ -3,10 +3,7 @@ package org.omstu;
 import org.omstu.common.IoC;
 import org.omstu.common.JavaClassFile;
 import org.omstu.common.commands.DescentOutputCommand;
-import org.omstu.common.strategies.BuildDescentStrategy;
-import org.omstu.common.strategies.DirectoryReadStrategy;
-import org.omstu.common.strategies.FileReadStrategy;
-import org.omstu.common.strategies.WordCountStrategy;
+import org.omstu.common.strategies.*;
 import org.omstu.interfaces.ICommand;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -23,6 +20,7 @@ public class ClassDescentTest {
         IoC.register("WordCount", (args) -> new WordCountStrategy().execute(args));
         IoC.register("DirectoryRead", (args) -> new DirectoryReadStrategy().execute(args));
         IoC.register("BuildDescent", (args) -> new BuildDescentStrategy().execute(args));
+        IoC.register("InitializeHandler", (args) -> new InitializeHandlerStrategy().execute(args));
 
         IoC.register("ConsoleOutput", DescentOutputCommand::new);
         IoC.register("GetJavaFile", JavaClassFile::new);
@@ -51,6 +49,20 @@ public class ClassDescentTest {
         Assert.assertEquals(descent.get("IJavaFile").size(), 1);
         Assert.assertEquals(descent.get("ICommand").size(), 2);
         Assert.assertEquals(descent.get("IStrategy").size(), 4);
+
+        var command = (ICommand) IoC.resolve("ConsoleOutput", descent);
+        command.execute();
+    }
+
+    @Test
+    public void springFrameworkDescentTest() {
+        var files = (List<?>) IoC.resolve("DirectoryRead", "spring-framework-main");
+
+        var descent = (Map<String, List<String>>) IoC.resolve("BuildDescent", files);
+
+//        Assert.assertEquals(descent.get("IJavaFile").size(), 1);
+//        Assert.assertEquals(descent.get("ICommand").size(), 2);
+//        Assert.assertEquals(descent.get("IStrategy").size(), 4);
 
         var command = (ICommand) IoC.resolve("ConsoleOutput", descent);
         command.execute();
