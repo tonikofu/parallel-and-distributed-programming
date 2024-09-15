@@ -60,9 +60,9 @@ public class ClassDescentTest {
 
         var descent = (Map<String, List<String>>) IoC.resolve("BuildDescent", files);
 
-//        Assert.assertEquals(descent.get("IJavaFile").size(), 1);
-//        Assert.assertEquals(descent.get("ICommand").size(), 2);
-//        Assert.assertEquals(descent.get("IStrategy").size(), 4);
+        Assert.assertEquals(descent.get("AsyncHandlerMethodReturnValueHandler").size(), 2);
+        Assert.assertEquals(descent.get("GenericTableMetaDataProvider").size(), 4);
+        Assert.assertEquals(descent.get("SerialFormat").size(), 2);
 
         var command = (ICommand) IoC.resolve("ConsoleOutput", descent);
         command.execute();

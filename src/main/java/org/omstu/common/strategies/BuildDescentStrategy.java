@@ -7,8 +7,6 @@ import org.omstu.interfaces.IStrategy;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
 
 public class BuildDescentStrategy implements IStrategy {
     public Object execute(Object... args) {
@@ -27,7 +25,9 @@ public class BuildDescentStrategy implements IStrategy {
                 parentClasses.addAll(Arrays.asList(Optional.ofNullable(javaFile.getClassImplements()).orElse(new String[]{})));
 
                 for (String parent : parentClasses) {
-                    descent.computeIfAbsent(parent, k -> new ArrayList<>()).add(className);
+                    if (parent != null && !parent.isEmpty()) {
+                        descent.computeIfAbsent(parent, k -> new ArrayList<>()).add(className);
+                    }
                 }
                 latch.countDown();
             });
