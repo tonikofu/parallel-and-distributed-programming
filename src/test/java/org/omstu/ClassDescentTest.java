@@ -34,9 +34,9 @@ public class ClassDescentTest {
 
         var descent = (Map<String, List<String>>) IoC.resolve("BuildDescent", files);
 
-        Assert.assertEquals(descent.get("NonExistentTriangleException").size(), 1);
-        Assert.assertEquals(descent.get("Quadrangle").size(), 2);
-        Assert.assertEquals(descent.get("IPolygon").size(), 0);
+        Assert.assertEquals(descent.get("Angle").size(), 1);
+        Assert.assertEquals(descent.get("IPolygon").size(), 2);
+        Assert.assertEquals(descent.get("Exception").size(), 1);
 
         var command = (ICommand) IoC.resolve("ConsoleOutput", descent);
         command.execute();
@@ -48,9 +48,9 @@ public class ClassDescentTest {
 
         var descent = (Map<String, List<String>>) IoC.resolve("BuildDescent", files);
 
-        Assert.assertEquals(descent.get("IStrategy").size(), 0);
-        Assert.assertEquals(descent.get("BuildDescentStrategy").size(), 1);
-        Assert.assertEquals(descent.get("JavaClassFile").size(), 1);
+        Assert.assertEquals(descent.get("IJavaFile").size(), 1);
+        Assert.assertEquals(descent.get("ICommand").size(), 2);
+        Assert.assertEquals(descent.get("IStrategy").size(), 4);
 
         var command = (ICommand) IoC.resolve("ConsoleOutput", descent);
         command.execute();

@@ -45,7 +45,7 @@ public class JavaClassFile implements IJavaFile {
         String[] interfaces;
 
         if (implementsMatcher.find()) {
-            interfaces = implementsMatcher.group(1).split(",\\s*");
+            interfaces = implementsMatcher.group(1).trim().split(",\\s*");
             return interfaces;
         }
 
