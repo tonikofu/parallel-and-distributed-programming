@@ -11,7 +11,7 @@ public class BuildDescentStrategy implements IStrategy {
         List<?> paths = (List<?>) args[0];
         Map<String, List<String>> descent = new HashMap<>();
 
-        for (Object path : paths) {
+        paths.forEach((path) -> {
             JavaClassFile javaFile = (JavaClassFile) IoC.resolve("GetJavaFile", path);
 
             String className = javaFile.getClassName();
@@ -20,16 +20,16 @@ public class BuildDescentStrategy implements IStrategy {
             Optional.ofNullable(javaFile.getClassExtends()).ifPresent(parentClasses::add);
             parentClasses.addAll(Arrays.asList(Optional.ofNullable(javaFile.getClassImplements()).orElse(new String[]{})));
 
-            for (String parent : parentClasses) {
+            parentClasses.forEach((parent) -> {
                 List<String> children = descent.getOrDefault(parent, new ArrayList<>());
                 children.add(className);
                 descent.put(parent, children);
-            }
+            });
+        });
 
 //            for (String parent : parentClasses) {
 //                descent.computeIfAbsent(parent, k -> new ArrayList<>()).add(className);
 //            }
-        }
 
         return descent;
     }
