@@ -5,7 +5,6 @@ import org.omstu.interfaces.IStrategy;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.logging.Logger;
 
 public class FileReadStrategy implements IStrategy {

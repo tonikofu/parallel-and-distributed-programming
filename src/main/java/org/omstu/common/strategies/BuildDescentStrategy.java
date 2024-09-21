@@ -21,8 +21,14 @@ public class BuildDescentStrategy implements IStrategy {
             parentClasses.addAll(Arrays.asList(Optional.ofNullable(javaFile.getClassImplements()).orElse(new String[]{})));
 
             for (String parent : parentClasses) {
-                descent.computeIfAbsent(parent, k -> new ArrayList<>()).add(className);
+                List<String> children = descent.getOrDefault(parent, new ArrayList<>());
+                children.add(className);
+                descent.put(parent, children);
             }
+
+//            for (String parent : parentClasses) {
+//                descent.computeIfAbsent(parent, k -> new ArrayList<>()).add(className);
+//            }
         }
 
         return descent;
