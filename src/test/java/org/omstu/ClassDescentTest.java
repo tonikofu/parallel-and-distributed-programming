@@ -2,9 +2,9 @@ package org.omstu;
 
 import org.omstu.common.IoC;
 import org.omstu.common.JavaClassFile;
-import org.omstu.common.commands.DescentOutputCommand;
+import org.omstu.common.commands.DescentOutput;
 import org.omstu.common.strategies.*;
-import org.omstu.interfaces.ICommand;
+import org.omstu.interfaces.IOutput;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -22,7 +22,7 @@ public class ClassDescentTest {
         IoC.register("BuildDescent", (args) -> new BuildDescentStrategy().execute(args));
         IoC.register("InitializeHandler", (args) -> new InitializeHandlerStrategy().execute(args));
 
-        IoC.register("ConsoleOutput", DescentOutputCommand::new);
+        IoC.register("ConsoleOutput", DescentOutput::new);
         IoC.register("GetJavaFile", JavaClassFile::new);
     }
 
@@ -36,7 +36,7 @@ public class ClassDescentTest {
         Assert.assertEquals(descent.get("IPolygon").size(), 2);
         Assert.assertEquals(descent.get("Exception").size(), 1);
 
-        var command = (ICommand) IoC.resolve("ConsoleOutput", descent);
+        var command = (IOutput) IoC.resolve("ConsoleOutput", descent);
         command.execute();
     }
 
@@ -47,10 +47,10 @@ public class ClassDescentTest {
         var descent = (Map<String, List<String>>) IoC.resolve("BuildDescent", files);
 
         Assert.assertEquals(descent.get("IJavaFile").size(), 1);
-        Assert.assertEquals(descent.get("ICommand").size(), 2);
+        Assert.assertEquals(descent.get("IOutput").size(), 2);
         Assert.assertEquals(descent.get("IStrategy").size(), 4);
 
-        var command = (ICommand) IoC.resolve("ConsoleOutput", descent);
+        var command = (IOutput) IoC.resolve("ConsoleOutput", descent);
         command.execute();
     }
 
@@ -64,7 +64,7 @@ public class ClassDescentTest {
         Assert.assertEquals(descent.get("GenericTableMetaDataProvider").size(), 4);
         Assert.assertEquals(descent.get("SerialFormat").size(), 2);
 
-        var command = (ICommand) IoC.resolve("ConsoleOutput", descent);
+        var command = (IOutput) IoC.resolve("ConsoleOutput", descent);
         command.execute();
     }
 }

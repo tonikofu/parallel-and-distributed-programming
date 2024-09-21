@@ -1,5 +1,5 @@
 package org.omstu.interfaces;
 
-public interface ICommand {
+public interface IOutput {
     void execute();
 }

@@ -1,15 +1,15 @@
 package org.omstu.common.commands;
 
-import org.omstu.interfaces.ICommand;
+import org.omstu.interfaces.IOutput;
 
 import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings(value="unchecked")
-public class DescentOutputCommand implements ICommand {
+public class DescentOutput implements IOutput {
     Map<String, List<String>> descent;
 
-    public DescentOutputCommand(Object... args) {
+    public DescentOutput(Object... args) {
         this.descent = (Map<String, List<String>>) args[0];
     }
 

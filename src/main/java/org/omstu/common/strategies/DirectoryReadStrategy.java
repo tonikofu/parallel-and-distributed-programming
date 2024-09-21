@@ -20,8 +20,8 @@ public class DirectoryReadStrategy implements IStrategy {
             paths.filter(Files::isRegularFile)
                     .filter(path -> path.toString().endsWith(".java"))
                     .forEach(files::add);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
         }
 
         return files;

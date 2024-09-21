@@ -1,11 +1,11 @@
 package org.omstu.common.commands;
 
-import org.omstu.interfaces.ICommand;
+import org.omstu.interfaces.IOutput;
 
 import java.util.List;
 import java.util.Map;
 
-public class DescentOutputCommand implements ICommand {
+public class DescentOutputCommand implements IOutput {
     Map<String, List<String>> descent;
 
     public DescentOutputCommand(Object... args) {

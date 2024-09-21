@@ -1,10 +1,10 @@
 package org.omstu.common.commands;
 
-import org.omstu.interfaces.ICommand;
+import org.omstu.interfaces.IOutput;
 
 import java.util.Map;
 
-public class WordCountOutputCommand implements ICommand {
+public class WordCountOutputCommand implements IOutput {
     Map<?, ?> countInfo;
 
     public WordCountOutputCommand(Object... args) {
