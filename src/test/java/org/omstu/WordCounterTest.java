@@ -1,10 +1,10 @@
 package org.omstu;
 
 import org.omstu.common.IoC;
-import org.omstu.common.commands.WordCountOutputCommand;
+import org.omstu.common.commands.WordCountOutput;
 import org.omstu.common.strategies.FileReadStrategy;
 import org.omstu.common.strategies.WordCountStrategy;
-import org.omstu.interfaces.ICommand;
+import org.omstu.interfaces.IOutput;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -18,7 +18,7 @@ public class WordCounterTest {
         IoC.register("FileRead", (args) -> new FileReadStrategy().execute(args));
         IoC.register("WordCount", (args) -> new WordCountStrategy().execute(args));
 
-        IoC.register("ConsoleOutput", WordCountOutputCommand::new);
+        IoC.register("ConsoleOutput", WordCountOutput::new);
     }
 
     @Test
@@ -31,7 +31,7 @@ public class WordCounterTest {
         Assert.assertEquals(result.get("my"), 3);
         Assert.assertEquals(result.get("love"), 1);
 
-        var command = (ICommand) IoC.resolve("ConsoleOutput", result);
+        var command = (IOutput) IoC.resolve("ConsoleOutput", result);
         command.execute();
     }
 
@@ -45,7 +45,7 @@ public class WordCounterTest {
         Assert.assertEquals(result.get("id"), 3);
         Assert.assertEquals(result.get("semper"), 3);
 
-        var command = (ICommand) IoC.resolve("ConsoleOutput", result);
+        var command = (IOutput) IoC.resolve("ConsoleOutput", result);
         command.execute();
     }
 }
