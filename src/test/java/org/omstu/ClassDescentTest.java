@@ -47,7 +47,7 @@ public class ClassDescentTest {
         var descent = (Map<String, List<String>>) IoC.resolve("BuildDescent", files);
 
         Assert.assertEquals(descent.get("IJavaFile").size(), 1);
-        Assert.assertEquals(descent.get("IOutput").size(), 2);
+        Assert.assertEquals(descent.get("IOutput").size(), 3);
         Assert.assertEquals(descent.get("IStrategy").size(), 4);
 
         var command = (IOutput) IoC.resolve("ConsoleOutput", descent);
