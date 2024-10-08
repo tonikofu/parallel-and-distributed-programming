@@ -3,6 +3,7 @@ package org.omstu;
 import org.omstu.common.IoC;
 import org.omstu.common.commands.WordCountOutput;
 import org.omstu.common.strategies.FileReadStrategy;
+import org.omstu.common.strategies.InitializeHandlerStrategy;
 import org.omstu.common.strategies.WordCountStrategy;
 import org.omstu.interfaces.IOutput;
 import org.testng.Assert;
@@ -17,6 +18,7 @@ public class WordCounterTest {
     static {
         IoC.register("FileRead", (args) -> new FileReadStrategy().execute(args));
         IoC.register("WordCount", (args) -> new WordCountStrategy().execute(args));
+        IoC.register("InitializeHandler", (args) -> new InitializeHandlerStrategy().execute(args));
 
         IoC.register("ConsoleOutput", WordCountOutput::new);
     }

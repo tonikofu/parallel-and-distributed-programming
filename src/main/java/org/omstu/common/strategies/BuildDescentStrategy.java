@@ -5,31 +5,41 @@ import org.omstu.common.JavaClassFile;
 import org.omstu.interfaces.IStrategy;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
 
 public class BuildDescentStrategy implements IStrategy {
     public Object execute(Object... args) {
         List<?> paths = (List<?>) args[0];
-        Map<String, List<String>> descent = new HashMap<>();
+        Map<String, List<String>> descent = new ConcurrentHashMap<>();
 
-        paths.forEach((path) -> {
-            JavaClassFile javaFile = (JavaClassFile) IoC.resolve("GetJavaFile", path);
+        CountDownLatch latch = new CountDownLatch(paths.size());
 
-            String className = javaFile.getClassName();
+        paths.forEach(path -> {
+            Thread thread = new Thread(() -> {
+                JavaClassFile javaFile = (JavaClassFile) IoC.resolve("GetJavaFile", path);
+                String className = javaFile.getClassName();
 
-            List<String> parentClasses = new ArrayList<>();
-            Optional.ofNullable(javaFile.getClassExtends()).ifPresent(parentClasses::add);
-            parentClasses.addAll(Arrays.asList(Optional.ofNullable(javaFile.getClassImplements()).orElse(new String[]{})));
+                List<String> parentClasses = new ArrayList<>();
+                Optional.ofNullable(javaFile.getClassExtends()).ifPresent(parentClasses::add);
+                parentClasses.addAll(Arrays.asList(Optional.ofNullable(javaFile.getClassImplements()).orElse(new String[]{})));
 
-            parentClasses.forEach((parent) -> {
-                List<String> children = descent.getOrDefault(parent, new ArrayList<>());
-                children.add(className);
-                descent.put(parent, children);
+                parentClasses.forEach((parent) -> {
+                    if (parent != null && !parent.isEmpty()) {
+                        descent.computeIfAbsent(parent, k -> new ArrayList<>()).add(className);
+                    }
+                });
+
+                latch.countDown();
             });
+            thread.start();
         });
 
-//            for (String parent : parentClasses) {
-//                descent.computeIfAbsent(parent, k -> new ArrayList<>()).add(className);
-//            }
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         return descent;
     }

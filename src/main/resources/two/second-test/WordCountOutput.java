@@ -4,7 +4,11 @@ import org.omstu.interfaces.IOutput;
 
 import java.util.Map;
 
+<<<<<<< HEAD:src/main/resources/two/second-test/WordCountOutputCommand.java
+public class WordCountOutputCommand implements IOutput {
+=======
 public class WordCountOutput implements IOutput {
+>>>>>>> main:src/main/resources/two/second-test/WordCountOutput.java
     Map<?, ?> countInfo;
 
     public WordCountOutput(Object... args) {
