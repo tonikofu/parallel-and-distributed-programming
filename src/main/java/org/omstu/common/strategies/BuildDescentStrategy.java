@@ -1,23 +1,25 @@
 package org.omstu.common.strategies;
 
-import org.omstu.common.IoC;
-import org.omstu.common.JavaClassFile;
-import org.omstu.interfaces.IStrategy;
+import org.omstu.common.objects.IOC;
+import org.omstu.common.objects.ItemStorage;
+import org.omstu.common.objects.JavaClassFile;
+import org.omstu.common.interfaces.IStrategy;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 
 public class BuildDescentStrategy implements IStrategy {
     public Object execute(Object... args) {
         List<?> paths = (List<?>) args[0];
-        Map<String, List<String>> descent = new ConcurrentHashMap<>();
-
         CountDownLatch latch = new CountDownLatch(paths.size());
+        ItemStorage storage = new ItemStorage();
 
         paths.forEach(path -> {
             Thread thread = new Thread(() -> {
-                JavaClassFile javaFile = (JavaClassFile) IoC.resolve("GetJavaFile", path);
+                JavaClassFile javaFile = (JavaClassFile) IOC.resolve("GetJavaFile", path);
                 String className = javaFile.getClassName();
 
                 List<String> parentClasses = new ArrayList<>();
@@ -25,9 +27,7 @@ public class BuildDescentStrategy implements IStrategy {
                 parentClasses.addAll(Arrays.asList(Optional.ofNullable(javaFile.getClassImplements()).orElse(new String[]{})));
 
                 parentClasses.forEach((parent) -> {
-                    if (parent != null && !parent.isEmpty()) {
-                        descent.computeIfAbsent(parent, k -> new ArrayList<>()).add(className);
-                    }
+                    storage.put(parent, className);
                 });
 
                 latch.countDown();
@@ -41,6 +41,6 @@ public class BuildDescentStrategy implements IStrategy {
             throw new RuntimeException(e);
         }
 
-        return descent;
+        return storage.get();
     }
 }

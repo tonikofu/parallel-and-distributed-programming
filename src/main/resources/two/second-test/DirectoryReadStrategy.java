@@ -1,6 +1,6 @@
 package org.omstu.common.strategies;
 
-import org.omstu.interfaces.IStrategy;
+import org.omstu.common.interfaces.IStrategy;
 
 import java.io.IOException;
 import java.nio.file.Files;

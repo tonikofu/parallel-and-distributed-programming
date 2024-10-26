@@ -1,8 +1,8 @@
 package org.omstu.common.strategies;
 
-import org.omstu.common.IoC;
-import org.omstu.common.JavaClassFile;
-import org.omstu.interfaces.IStrategy;
+import org.omstu.common.objects.IOC;
+import org.omstu.common.objects.JavaClassFile;
+import org.omstu.common.interfaces.IStrategy;
 
 import java.util.*;
 
@@ -12,7 +12,7 @@ public class BuildDescentStrategy implements IStrategy {
         Map<String, List<String>> descent = new HashMap<>();
 
         for (Object path : paths) {
-            JavaClassFile javaFile = (JavaClassFile) IoC.resolve("GetJavaFile", path);
+            JavaClassFile javaFile = (JavaClassFile) IOC.resolve("GetJavaFile", path);
             List<String> subclasses = new ArrayList<>(List.of());
 
             String className = javaFile.getClassName();
