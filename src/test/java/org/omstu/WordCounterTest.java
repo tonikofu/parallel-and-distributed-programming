@@ -19,7 +19,7 @@ public class WordCounterTest {
     public void successCountFirstTest() {
         var text = (String) IOC.resolve("FileRead", Paths.get(String.format("%s/one/word-counter-test-one.txt", BASE_DIR)));
 
-        var result = (Map<?, ?>) IOC.resolve("WordCount", text);
+        var result = (Map<?, ?>) IOC.resolve("word-count-strategy", text);
 
         Assert.assertEquals(result.get("hello"), 3);
         Assert.assertEquals(result.get("my"), 3);
@@ -33,7 +33,7 @@ public class WordCounterTest {
     public void successCountSecondTest() {
         var text = (String) IOC.resolve("FileRead", Paths.get(String.format("%s/one/word-counter-test-two.txt", BASE_DIR)));
 
-        var result = (Map<?, ?>) IOC.resolve("WordCount", text);
+        var result = (Map<?, ?>) IOC.resolve("word-count-strategy", text);
 
         Assert.assertEquals(result.get("bibendum"), 1);
         Assert.assertEquals(result.get("id"), 3);

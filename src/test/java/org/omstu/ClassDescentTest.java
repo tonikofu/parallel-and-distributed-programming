@@ -20,7 +20,7 @@ public class ClassDescentTest {
     public void successClassDescentBuildFirstTest() {
         var files = (List<?>) IOC.resolve("DirectoryRead", String.format("%s/two/first-test", BASE_DIR));
 
-        var descent = (Map<String, List<String>>) IOC.resolve("BuildDescent", files);
+        var descent = (Map<String, List<String>>) IOC.resolve("get-class-descent-executor", files, 2);
 
         Assert.assertEquals(descent.get("Angle").size(), 1);
         Assert.assertEquals(descent.get("IPolygon").size(), 2);
@@ -34,7 +34,7 @@ public class ClassDescentTest {
     public void successClassDescentBuildSecondTest() {
         var files = (List<?>) IOC.resolve("DirectoryRead", String.format("%s/two/second-test", BASE_DIR));
 
-        var descent = (Map<String, List<String>>) IOC.resolve("BuildDescent", files);
+        var descent = (Map<String, List<String>>) IOC.resolve("get-class-descent-executor", files, 4);
 
         Assert.assertEquals(descent.get("IJavaFile").size(), 1);
         Assert.assertEquals(descent.get("IOutput").size(), 3);
@@ -48,7 +48,7 @@ public class ClassDescentTest {
     public void springFrameworkDescentTest() {
         var files = (List<?>) IOC.resolve("DirectoryRead", "spring-framework-main");
 
-        var descent = (Map<String, List<String>>) IOC.resolve("BuildDescent", files);
+        var descent = (Map<String, List<String>>) IOC.resolve("BuildDescent", files, 16);
 
         Assert.assertEquals(descent.get("AsyncHandlerMethodReturnValueHandler").size(), 2);
         Assert.assertEquals(descent.get("GenericTableMetaDataProvider").size(), 4);
