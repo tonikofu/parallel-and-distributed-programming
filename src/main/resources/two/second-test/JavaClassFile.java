@@ -1,6 +1,7 @@
 package org.omstu.common;
 
-import org.omstu.interfaces.IJavaFile;
+import org.omstu.common.objects.IOC;
+import org.omstu.common.interfaces.IJavaFile;
 
 import java.nio.file.Path;
 import java.util.regex.Matcher;
@@ -17,7 +18,7 @@ public class JavaClassFile implements IJavaFile {
     public JavaClassFile(Object... args) {
         this.path = (Path) args[0];
 
-        this.data = (String) IoC.resolve("FileRead", path);
+        this.data = (String) IOC.resolve("FileRead", path);
     }
 
     public String getClassName() {

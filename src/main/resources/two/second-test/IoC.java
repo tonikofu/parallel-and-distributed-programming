@@ -1,5 +1,7 @@
 package org.omstu.common;
 
+import org.omstu.common.objects.IOC;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -7,7 +9,7 @@ import java.util.logging.Logger;
 
 public final class IoC {
     private static final Map<String, Function<Object[], Object>> FACTORY = new HashMap<>();
-    private static final Logger LOGGER = Logger.getLogger(IoC.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(IOC.class.getName());
 
     private IoC() {};
 

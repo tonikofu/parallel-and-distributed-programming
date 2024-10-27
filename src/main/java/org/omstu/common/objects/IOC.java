@@ -1,15 +1,15 @@
-package org.omstu.common;
+package org.omstu.common.objects;
+
+import org.omstu.common.exceptions.ResolutionException;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.logging.Logger;
 
-public final class IoC {
+public final class IOC {
     private static final Map<String, Function<Object[], Object>> FACTORY = new HashMap<>();
-    private static final Logger LOGGER = Logger.getLogger(IoC.class.getName());
 
-    private IoC() {};
+    private IOC() {}
 
     public static void register(final String key, final Function<Object[], Object> function) {
         FACTORY.put(key, function);
@@ -22,8 +22,6 @@ public final class IoC {
             return function.apply(args);
         }
 
-        String message = String.format("No command registered for key: %s", key);
-        LOGGER.severe(message);
-        throw new IllegalArgumentException(message);
+        throw new ResolutionException(String.format("No command registered for key: %s", key));
     }
 }

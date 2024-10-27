@@ -1,7 +1,7 @@
 package org.omstu.common.strategies;
 
-import org.omstu.common.IoC;
-import org.omstu.interfaces.IStrategy;
+import org.omstu.common.objects.IOC;
+import org.omstu.common.interfaces.IStrategy;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,7 +13,7 @@ public class FileReadStrategy implements IStrategy {
     private static final Logger LOGGER = Logger.getLogger(FileReadStrategy.class.getName());
 
     static {
-        var fileHandler = (FileHandler) IoC.resolve("InitializeHandler", "file.log");
+        var fileHandler = (FileHandler) IOC.resolve("InitializeHandler", "file.log");
 
         LOGGER.addHandler(fileHandler);
         LOGGER.setUseParentHandlers(false);

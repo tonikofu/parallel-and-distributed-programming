@@ -1,4 +1,4 @@
-package org.omstu.interfaces;
+package org.omstu.common.interfaces;
 
 public interface IOutput {
     void execute();

@@ -1,6 +1,6 @@
-package org.omstu.common.commands;
+package org.omstu.common.output;
 
-import org.omstu.interfaces.IOutput;
+import org.omstu.common.interfaces.IOutput;
 
 import java.util.Map;
 
