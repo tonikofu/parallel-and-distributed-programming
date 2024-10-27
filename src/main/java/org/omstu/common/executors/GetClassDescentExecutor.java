@@ -7,19 +7,12 @@ import org.omstu.common.objects.ItemStorage;
 import org.omstu.common.objects.JavaClassFile;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.*;
+import java.util.concurrent.*;
 
 public class GetClassDescentExecutor implements IExecutor {
     private final List<Path> paths;
-    private final List<Future<?>> futures = new ArrayList<>();
     private final ExecutorService executorService;
-    private final ItemStorage storage = new ItemStorage();
 
     public GetClassDescentExecutor(Object... args) {
         if (args.length < 2) {
@@ -31,23 +24,30 @@ public class GetClassDescentExecutor implements IExecutor {
     }
 
     public Object get() {
+        List<Future<ItemStorage>> futures = new ArrayList<>();
         paths.forEach(path -> {
-            Future<?> future = executorService.submit(() -> {
-                JavaClassFile javaFile = (JavaClassFile) IOC.resolve("GetJavaFile", path);
+            Future<ItemStorage> future = executorService.submit(() -> {
+                JavaClassFile javaFile = (JavaClassFile) IOC.resolve("get-java-file-executor", path);
                 String className = javaFile.getClassName();
 
                 List<String> parentClasses = new ArrayList<>();
                 Optional.ofNullable(javaFile.getClassExtends()).ifPresent(parentClasses::add);
                 parentClasses.addAll(Arrays.asList(Optional.ofNullable(javaFile.getClassImplements()).orElse(new String[]{})));
 
-                parentClasses.forEach((parent) -> storage.put(parent, className));
+                ItemStorage localStorage = new ItemStorage();
+                parentClasses.forEach((parent) -> localStorage.put(parent, className));
+
+                return localStorage;
             });
+
             futures.add(future);
         });
 
+        ItemStorage storage = new ItemStorage();
         futures.forEach(future -> {
             try {
-                future.get();
+                ItemStorage result = future.get();
+                storage.putAll(result.get());
             } catch (Exception exception) {
                 throw new RuntimeException(exception);
             }

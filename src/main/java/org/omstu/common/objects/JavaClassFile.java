@@ -11,12 +11,10 @@ public class JavaClassFile implements IJavaFile {
     private static final Pattern EXTENDS_PATTERN = Pattern.compile("extends\\s+([A-Z][a-zA-Z]*)");
     private static final Pattern IMPLEMENTS_PATTERN = Pattern.compile("implements\\s+((?:[A-Z][a-zA-Z0-9]*(?:,\\s*)?|(?:\\s+|,)?)+)");
 
-    Path path;
     String data;
 
     public JavaClassFile(Object... args) {
-        this.path = (Path) args[0];
-        this.data = (String) IOC.resolve("FileRead", path);
+        this.data = (String) IOC.resolve("file-read-strategy", args[0]);
     }
 
     public String getClassName() {
