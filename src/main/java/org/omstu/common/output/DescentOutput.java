@@ -5,7 +5,6 @@ import org.omstu.common.interfaces.IOutput;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings(value="unchecked")
 public class DescentOutput implements IOutput {
     Map<String, List<String>> descent;
 
