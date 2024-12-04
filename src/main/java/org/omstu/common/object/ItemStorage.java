@@ -1,4 +1,4 @@
-package org.omstu.common.objects;
+package org.omstu.common.object;
 
 import java.util.ArrayList;
 import java.util.HashMap;

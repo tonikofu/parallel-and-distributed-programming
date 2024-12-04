@@ -1,7 +1,9 @@
 package org.omstu;
 
-import org.omstu.common.interfaces.IOutput;
-import org.omstu.common.objects.IOC;
+import org.omstu.common.executor.IExecutor;
+import org.omstu.common.output.IOutput;
+import org.omstu.common.ioc.IOC;
+import org.omstu.common.ioc.IOCInitializer;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -17,29 +19,33 @@ public class WordCounterTest {
 
     @Test
     public void successCountFirstTest() {
-        var text = (String) IOC.resolve("file-read-strategy", Paths.get(String.format("%s/one/word-counter-test-one.txt", BASE_DIR)));
+        IExecutor textExecutor = IOC.resolve("get-file-data-executor", Paths.get(String.format("%s/one/word-counter-test-one.txt", BASE_DIR)));
+        var text = (String) textExecutor.execute();
 
-        var result = (Map<?, ?>) IOC.resolve("word-count-strategy", text);
+        IExecutor countExecutor = IOC.resolve("get-word-count-executor", text);
+        var count = (Map<?, ?>) countExecutor.execute();
 
-        Assert.assertEquals(result.get("hello"), 3);
-        Assert.assertEquals(result.get("my"), 3);
-        Assert.assertEquals(result.get("love"), 1);
+        Assert.assertEquals(count.get("hello"), 3);
+        Assert.assertEquals(count.get("my"), 3);
+        Assert.assertEquals(count.get("love"), 1);
 
-        var command = (IOutput) IOC.resolve("word-count-output", result);
-        command.execute();
+        var output = (IOutput) IOC.resolve("word-count-output", count);
+        output.execute();
     }
 
     @Test
     public void successCountSecondTest() {
-        var text = (String) IOC.resolve("file-read-strategy", Paths.get(String.format("%s/one/word-counter-test-two.txt", BASE_DIR)));
+        IExecutor textExecutor = IOC.resolve("get-file-data-executor", Paths.get(String.format("%s/one/word-counter-test-two.txt", BASE_DIR)));
+        var text = (String) textExecutor.execute();
 
-        var result = (Map<?, ?>) IOC.resolve("word-count-strategy", text);
+        IExecutor countExecutor = IOC.resolve("get-word-count-executor", text);
+        var count = (Map<?, ?>) countExecutor.execute();
 
-        Assert.assertEquals(result.get("bibendum"), 1);
-        Assert.assertEquals(result.get("id"), 3);
-        Assert.assertEquals(result.get("semper"), 3);
+        Assert.assertEquals(count.get("bibendum"), 1);
+        Assert.assertEquals(count.get("id"), 3);
+        Assert.assertEquals(count.get("semper"), 3);
 
-        var command = (IOutput) IOC.resolve("word-count-output", result);
-        command.execute();
+        var output = (IOutput) IOC.resolve("word-count-output", count);
+        output.execute();
     }
 }

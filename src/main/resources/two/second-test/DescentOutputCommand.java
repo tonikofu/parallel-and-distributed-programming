@@ -1,7 +1,5 @@
 package org.omstu.common.output;
 
-import org.omstu.common.interfaces.IOutput;
-
 import java.util.List;
 import java.util.Map;
 

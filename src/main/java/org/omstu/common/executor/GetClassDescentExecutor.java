@@ -1,10 +1,8 @@
-package org.omstu.common.executors;
+package org.omstu.common.executor;
 
-import org.omstu.common.exceptions.NotEnoughArgumentsException;
-import org.omstu.common.interfaces.IExecutor;
-import org.omstu.common.objects.IOC;
-import org.omstu.common.objects.ItemStorage;
-import org.omstu.common.objects.JavaClassFile;
+import org.omstu.common.processor.FileProcessor;
+import org.omstu.common.ioc.IOC;
+import org.omstu.common.object.ItemStorage;
 
 import java.nio.file.Path;
 import java.util.*;
@@ -23,21 +21,12 @@ public class GetClassDescentExecutor implements IExecutor {
         this.executorService = Executors.newFixedThreadPool((int) args[1]);
     }
 
-    public Object get() {
+    public Object execute() {
         List<Future<ItemStorage>> futures = new ArrayList<>();
         paths.forEach(path -> {
             Future<ItemStorage> future = executorService.submit(() -> {
-                JavaClassFile javaFile = (JavaClassFile) IOC.resolve("get-java-file-executor", path);
-                String className = javaFile.getClassName();
-
-                List<String> parentClasses = new ArrayList<>();
-                Optional.ofNullable(javaFile.getClassExtends()).ifPresent(parentClasses::add);
-                parentClasses.addAll(Arrays.asList(Optional.ofNullable(javaFile.getClassImplements()).orElse(new String[]{})));
-
-                ItemStorage localStorage = new ItemStorage();
-                parentClasses.forEach((parent) -> localStorage.put(parent, className));
-
-                return localStorage;
+                FileProcessor processor = IOC.resolve("file-processor", path);
+                return processor.process();
             });
 
             futures.add(future);
