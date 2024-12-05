@@ -16,7 +16,9 @@ public class ItemStorage {
         }
     }
 
-    public void putAll(Map<String, List<String>> map) {
+    public void putAll(ItemStorage localStorage) {
+        Map<String, List<String>> map = localStorage.get();
+
         for (Map.Entry<String, List<String>> entry : map.entrySet()) {
             String key = entry.getKey();
             List<String> valuesToAdd = entry.getValue();

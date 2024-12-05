@@ -19,6 +19,6 @@ public final class IOC {
         if (strategy != null) {
             return (T) strategy.execute(args);
         }
-        throw new IllegalArgumentException("No command registered for key: " + key);
+        throw new ResolutionException("No command registered for key: " + key);
     }
 }

@@ -23,7 +23,7 @@ public class ClassDescentTest {
         IExecutor fileExecutor = IOC.resolve("get-directory-files-list-executor", String.format("%s/two/first-test", BASE_DIR));
         var files = (List<Path>) fileExecutor.execute();
 
-        IExecutor descentExecutor = IOC.resolve("get-class-descent-executor", files, 2);
+        IExecutor descentExecutor = IOC.resolve("get-class-descent-executor", files, 4);
         var descent = (Map<String, List<String>>) descentExecutor.execute();
 
         Assert.assertEquals(descent.get("Angle").size(), 1);
