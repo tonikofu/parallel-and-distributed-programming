@@ -38,7 +38,8 @@ public class GetClassDescentExecutor implements IExecutor {
             try {
                 tasks.put(path);
             } catch (InterruptedException exception) {
-                throw new RuntimeException(exception);
+                Thread.currentThread().interrupt();
+                throw new IllegalStateException("Task submission interrupted", exception);
             }
         }
 
@@ -46,7 +47,8 @@ public class GetClassDescentExecutor implements IExecutor {
             try {
                 tasks.put(POISON_PILL);
             } catch (InterruptedException exception) {
-                throw new RuntimeException(exception);
+                Thread.currentThread().interrupt();
+                throw new IllegalStateException("Task submission interrupted", exception);
             }
         }
     }
@@ -57,20 +59,16 @@ public class GetClassDescentExecutor implements IExecutor {
         }
 
         ItemStorage storage = new ItemStorage();
-
-        for (int i = 0; i < paths.size(); i++) {
-            ItemStorage localStorage;
-
-            try {
-                localStorage = results.take();
-            } catch (InterruptedException exception) {
-                throw new RuntimeException(exception);
+        try {
+            for (int i = 0; i < paths.size(); i++) {
+                ItemStorage localStorage = results.take();
+                storage.putAll(localStorage);
             }
-
-            storage.putAll(localStorage);
+        } catch (InterruptedException exception) {
+            throw new RuntimeException("Execution failed", exception);
+        } finally {
+            executorService.shutdown();
         }
-
-        executorService.shutdown();
 
         return storage.get();
     }
