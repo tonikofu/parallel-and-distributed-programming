@@ -1,4 +1,4 @@
-package org.omstu.common.interfaces;
+package org.omstu.common.strategy;
 
 public interface IStrategy {
     Object execute(Object... args);

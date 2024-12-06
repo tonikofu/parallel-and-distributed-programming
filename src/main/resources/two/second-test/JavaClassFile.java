@@ -1,7 +1,7 @@
 package org.omstu.common;
 
-import org.omstu.common.objects.IOC;
-import org.omstu.common.interfaces.IJavaFile;
+import org.omstu.common.ioc.IOC;
+import org.omstu.common.object.IJavaFile;
 
 import java.nio.file.Path;
 import java.util.regex.Matcher;

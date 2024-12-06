@@ -1,7 +1,5 @@
 package org.omstu.common.output;
 
-import org.omstu.common.interfaces.IOutput;
-
 import java.util.Map;
 
 <<<<<<< HEAD:src/main/resources/two/second-test/WordCountOutputCommand.java

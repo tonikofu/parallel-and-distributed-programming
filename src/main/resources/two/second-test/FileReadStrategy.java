@@ -1,6 +1,6 @@
 package org.omstu.common.strategies;
 
-import org.omstu.common.interfaces.IStrategy;
+import org.omstu.common.strategy.IStrategy;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,8 +8,6 @@ import java.nio.file.Path;
 import java.util.logging.Logger;
 
 public class FileReadStrategy implements IStrategy {
-    private static final Logger LOGGER = Logger.getLogger(FileReadStrategy.class.getName());
-
     public Object execute(Object... args) {
         Path path = (Path) args[0];
 
