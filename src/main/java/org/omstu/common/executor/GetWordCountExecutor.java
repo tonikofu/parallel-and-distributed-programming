@@ -11,7 +11,7 @@ public class GetWordCountExecutor implements IExecutor {
 
     public GetWordCountExecutor(Object... args) {
         if (args.length < 1) {
-            throw new NotEnoughArgumentsException("Not enough arguments (needs 'file dsata')");
+            throw new NotEnoughArgumentsException("Not enough arguments (needs 'file data')");
         }
 
         this.text = (String) args[0];

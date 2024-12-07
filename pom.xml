@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.example</groupId>
-  <artifactId>labwork-1</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <artifactId>word-counter</artifactId>
+  <version>1.0</version>
   <packaging>jar</packaging>
 
   <name>labwork-1</name>
@@ -21,6 +21,16 @@
       <version>7.9.0</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-common</artifactId>
+      <version>3.4.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-mapreduce-client-core</artifactId>
+      <version>3.4.0</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -30,6 +40,18 @@
         <configuration>
           <source>11</source>
           <target>11</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>org.omstu.common.apache.WordCountDriver</mainClass>
+            </manifest>
+          </archive>
         </configuration>
       </plugin>
     </plugins>
