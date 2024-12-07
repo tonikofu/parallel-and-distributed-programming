@@ -54,10 +54,13 @@ public class GetClassDescentExecutor implements IExecutor {
     }
 
     public Object execute() {
+        // Map
         for (int i = 0; i < numWorkers; i++) {
             executorService.submit(new QueueWorker(tasks, results));
         }
+        executorService.shutdown();
 
+        // Reduce
         ItemStorage storage = new ItemStorage();
         try {
             for (int i = 0; i < paths.size(); i++) {
@@ -66,8 +69,6 @@ public class GetClassDescentExecutor implements IExecutor {
             }
         } catch (InterruptedException exception) {
             throw new RuntimeException("Execution failed", exception);
-        } finally {
-            executorService.shutdown();
         }
 
         return storage.get();
