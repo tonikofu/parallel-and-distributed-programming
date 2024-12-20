@@ -5,60 +5,38 @@ import org.omstu.common.worker.QueueWorker;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 
 public class GetClassDescentExecutor implements IExecutor {
     private static final Path POISON_PILL = Paths.get("POISON_PILL");
 
     private final List<Path> paths;
-    private final ExecutorService executorService;
-    private final BlockingQueue<Path> tasks;
-    private final BlockingQueue<ItemStorage> results;
     private final int numWorkers;
+    private static final int DEFAULT_CAPACITY = 10;
 
     public GetClassDescentExecutor(Object... args) {
         if (args.length < 2) {
-            throw new NotEnoughArgumentsException("Not enough arguments (needs 'list of files' and 'number of threads')");
+            throw new NotEnoughArgumentsException("Not enough arguments (needs 'list of files', 'number of threads')");
         }
 
         this.paths = (List<Path>) args[0];
         this.numWorkers = (int) args[1];
-
-        int capacity = paths.size() + numWorkers;
-        this.tasks = new LinkedBlockingQueue<>(capacity);
-        this.results = new LinkedBlockingQueue<>(capacity);
-
-        this.executorService = Executors.newFixedThreadPool(numWorkers);
-
-        for (Path path : paths) {
-            try {
-                tasks.put(path);
-            } catch (InterruptedException exception) {
-                Thread.currentThread().interrupt();
-                throw new IllegalStateException("Task submission interrupted", exception);
-            }
-        }
-
-        for (int i = 0; i < numWorkers; i++) {
-            try {
-                tasks.put(POISON_PILL);
-            } catch (InterruptedException exception) {
-                Thread.currentThread().interrupt();
-                throw new IllegalStateException("Task submission interrupted", exception);
-            }
-        }
     }
 
     public Object execute() {
         // Map
+        BlockingQueue<Path> tasks = new ArrayBlockingQueue<>(DEFAULT_CAPACITY);
+        BlockingQueue<ItemStorage> results = new ArrayBlockingQueue<>(DEFAULT_CAPACITY);
+
+        List<Thread> threads = new ArrayList<>();
         for (int i = 0; i < numWorkers; i++) {
-            executorService.submit(new QueueWorker(tasks, results));
+            threads.add(new Thread(new QueueWorker(tasks, results)));
+            threads.get(i).start();
         }
-        executorService.shutdown();
+
+        Thread producerThread = getProducerThread(tasks);
 
         // Reduce
         ItemStorage storage = new ItemStorage();
@@ -71,6 +49,43 @@ public class GetClassDescentExecutor implements IExecutor {
             throw new RuntimeException("Execution failed", exception);
         }
 
+        for (Thread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException("Thread joining failed", e);
+            }
+        }
+
+        try {
+            producerThread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Producer joining failed", e);
+        }
+
         return storage.get();
+    }
+
+    private Thread getProducerThread(BlockingQueue<Path> tasks) {
+        Thread producerThread = new Thread(() -> {
+            try {
+                for (Path path : paths) {
+                    tasks.put(path); //
+                }
+
+                for (int i = 0; i < numWorkers; i++) {
+                    tasks.put(POISON_PILL);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException("Producer interrupted", e);
+            }
+        });
+
+        producerThread.start();
+
+        return producerThread;
     }
 }
