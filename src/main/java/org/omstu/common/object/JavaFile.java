@@ -1,20 +1,21 @@
-package org.omstu.common.objects;
+package org.omstu.common.object;
 
-import org.omstu.common.interfaces.IJavaFile;
+import org.omstu.common.executor.IExecutor;
+import org.omstu.common.ioc.IOC;
 
-import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class JavaClassFile implements IJavaFile {
+public class JavaFile {
     private static final Pattern CLASS_PATTERN = Pattern.compile("(?<=class\\s|interface\\s)([A-Z][a-zA-Z\\d]*)");
     private static final Pattern EXTENDS_PATTERN = Pattern.compile("extends\\s+([A-Z][a-zA-Z]*)");
     private static final Pattern IMPLEMENTS_PATTERN = Pattern.compile("implements\\s+((?:[A-Z][a-zA-Z0-9]*(?:,\\s*)?|(?:\\s+|,)?)+)");
 
-    String data;
+    private final String data;
 
-    public JavaClassFile(Object... args) {
-        this.data = (String) IOC.resolve("file-read-strategy", args[0]);
+    public JavaFile(final Object... args) {
+        IExecutor dataExecutor = IOC.resolve("get-file-data-executor", args[0]);
+        this.data = (String) dataExecutor.execute();
     }
 
     public String getClassName() {

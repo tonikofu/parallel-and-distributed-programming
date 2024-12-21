@@ -1,6 +1,6 @@
 package org.omstu.common;
 
-import org.omstu.common.objects.IOC;
+import org.omstu.common.ioc.IOC;
 
 import java.util.HashMap;
 import java.util.Map;

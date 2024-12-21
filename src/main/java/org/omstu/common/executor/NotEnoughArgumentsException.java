@@ -1,7 +1,7 @@
-package org.omstu.common.exceptions;
+package org.omstu.common.executor;
 
 public class NotEnoughArgumentsException extends RuntimeException {
-    public NotEnoughArgumentsException(String message) {
+    public NotEnoughArgumentsException(final String message) {
         super(message);
     }
 }
