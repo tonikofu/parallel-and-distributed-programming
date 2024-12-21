@@ -7,7 +7,7 @@ import java.nio.file.Path;
 public class GetJavaFileExecutor implements IExecutor {
     private final Path path;
 
-    public GetJavaFileExecutor(Object... args) {
+    public GetJavaFileExecutor(final Object... args) {
         if (args.length < 1) {
             throw new NotEnoughArgumentsException("Not enough arguments (needs 'file path')");
         }

@@ -8,7 +8,7 @@ import java.util.Map;
 public class ItemStorage {
     private final Map<String, List<String>> storage = new HashMap<>();
 
-    public void put(String key, String item) {
+    public void put(final String key, final String item) {
         if (item == null) return;
 
         if (key != null && !key.isEmpty()) {
@@ -16,7 +16,7 @@ public class ItemStorage {
         }
     }
 
-    public void putAll(ItemStorage localStorage) {
+    public void putAll(final ItemStorage localStorage) {
         Map<String, List<String>> map = localStorage.get();
 
         for (Map.Entry<String, List<String>> entry : map.entrySet()) {

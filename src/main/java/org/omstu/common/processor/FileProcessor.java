@@ -15,7 +15,7 @@ import java.util.Optional;
 public class FileProcessor {
     private final Path path;
 
-    public FileProcessor(Object... args) {
+    public FileProcessor(final Object... args) {
         if (args.length < 1) {
             throw new NotEnoughArgumentsException("Not enough arguments (needs 'file path')");
         }

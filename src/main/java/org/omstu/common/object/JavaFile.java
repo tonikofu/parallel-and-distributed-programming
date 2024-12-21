@@ -11,9 +11,9 @@ public class JavaFile {
     private static final Pattern EXTENDS_PATTERN = Pattern.compile("extends\\s+([A-Z][a-zA-Z]*)");
     private static final Pattern IMPLEMENTS_PATTERN = Pattern.compile("implements\\s+((?:[A-Z][a-zA-Z0-9]*(?:,\\s*)?|(?:\\s+|,)?)+)");
 
-    String data;
+    private final String data;
 
-    public JavaFile(Object... args) {
+    public JavaFile(final Object... args) {
         IExecutor dataExecutor = IOC.resolve("get-file-data-executor", args[0]);
         this.data = (String) dataExecutor.execute();
     }

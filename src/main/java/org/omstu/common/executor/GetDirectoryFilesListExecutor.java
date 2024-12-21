@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 public class GetDirectoryFilesListExecutor implements IExecutor {
     private final String path;
 
-    public GetDirectoryFilesListExecutor(Object... args) {
+    public GetDirectoryFilesListExecutor(final Object... args) {
         if (args.length < 1) {
             throw new NotEnoughArgumentsException("Not enough arguments (needs 'directory path')");
         }

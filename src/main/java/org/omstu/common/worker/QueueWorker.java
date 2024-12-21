@@ -14,7 +14,8 @@ public class QueueWorker implements Runnable {
     private final BlockingQueue<Path> tasks;
     private final BlockingQueue<ItemStorage> results;
 
-    public QueueWorker(BlockingQueue<Path> tasks, BlockingQueue<ItemStorage> results) {
+    public QueueWorker(final BlockingQueue<Path> tasks,
+                       final BlockingQueue<ItemStorage> results) {
         this.tasks = tasks;
         this.results = results;
     }

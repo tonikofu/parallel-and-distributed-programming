@@ -9,7 +9,7 @@ public class GetWordCountExecutor implements IExecutor {
     private static final Pattern PATTERN = Pattern.compile("\\b\\w+\\b");
     private String text;
 
-    public GetWordCountExecutor(Object... args) {
+    public GetWordCountExecutor(final Object... args) {
         if (args.length < 1) {
             throw new NotEnoughArgumentsException("Not enough arguments (needs 'file dsata')");
         }

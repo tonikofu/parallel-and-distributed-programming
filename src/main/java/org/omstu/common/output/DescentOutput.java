@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 public class DescentOutput implements IOutput {
-    Map<String, List<String>> descent;
+    private final Map<String, List<String>> descent;
 
-    public DescentOutput(Object... args) {
+    public DescentOutput(final Object... args) {
         this.descent = (Map<String, List<String>>) args[0];
     }
 

@@ -3,9 +3,9 @@ package org.omstu.common.output;
 import java.util.Map;
 
 public class WordCountOutput implements IOutput {
-    Map<?, ?> countInfo;
+    private final Map<?, ?> countInfo;
 
-    public WordCountOutput(Object... args) {
+    public WordCountOutput(final Object... args) {
         this.countInfo = (Map<?, ?>) args[0];
     }
 
